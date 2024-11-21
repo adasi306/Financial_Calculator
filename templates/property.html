@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Investment Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .row.spacer {
+            margin-bottom: 30px;
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 0 10px;
+        }
+        .field {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .field-text {
+            margin-right: 20px;
+        }
+        .field input, .field .auto-fill {
+            margin-left: 5px;
+        }
+        .spacer-row {
+            height: 30px;
+        }
+        .auto-fill {
+            background-color: #f0f0f0;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button-container {
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form method="POST">
+            <div class="row">
+                <div class="column">
+                    <div class="field"><div class="field-text">Property Cost</div></div>
+                    <div class="field"><input type="text" name="property_cost" value="{{ results.property_cost if results else '' }}"></div>
+                    <div class="field"><div class="field-text">Monthly Loan Payment</div></div>
+                    <div class="field"><input type="text" name="monthly_loan_payment" value="{{ results.monthly_loan_payment if results else '' }}"></div>
+                    <div class="field"><div class="field-text">Loan Term (Months)</div></div>
+                    <div class="field"><input type="text" name="loan_term_months" value="{{ results.loan_term_months if results else '' }}"></div>
+                </div>
+                <div class="column">
+                    <div class="field"><div class="field-text">Rental Income</div></div>
+                    <div class="field"><input type="text" name="rental_income" value="{{ results.rental_income if results else '' }}"></div>
+                    <div class="field"><div class="field-text">Taxes</div></div>
+                    <div class="field"><input type="text" name="taxes" value="{{ results.taxes if results else '' }}"></div>
+                    <div class="field"><div class="field-text">Insurance</div></div>
+                    <div class="field"><input type="text" name="insurance" value="{{ results.insurance if results else '' }}"></div>
+                </div>
+                <div class="column">
+                    <div class="field"><div class="field-text">Management Costs</div></div>
+                    <div class="field"><input type="text" name="management_costs" value="{{ results.management_costs if results else '' }}"></div>
+                    <div class="field"><div class="field-text">Maintenance Costs</div></div>
+                    <div class="field"><input type="text" name="maintenance_costs" value="{{ results.maintenance_costs if results else '' }}"></div>
+                </div>
+            </div>
+            <div class="spacer-row"></div>
+            <div class="row">
+                <div class="column">
+                    <div class="field"><div class="field-text">Annual Difference</div></div>
+                    <div class="field"><div id="auto1" class="auto-fill">{{ results.annual_difference if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Annual Difference Including Loan</div></div>
+                    <div class="field"><div id="auto2" class="auto-fill">{{ results.annual_difference_incl_loan if results else '' }}</div></div>
+                </div>
+                <div class="column">
+                    <div class="field"><div class="field-text">Annual Profit</div></div>
+                    <div class="field"><div id="auto3" class="auto-fill">{{ results.annual_profit if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Annual Costs</div></div>
+                    <div class="field"><div id="auto4" class="auto-fill">{{ results.annual_costs if results else '' }}</div></div>
+                </div>
+                <div class="column">
+                    <div class="field"><div class="field-text">Return on Investment Time</div></div>
+                    <div class="field"><div id="auto5" class="auto-fill">{{ results.investment_return_time if results else '' }}</div></div>
+                </div>
+            </div>
+            <div class="button-container">
+                <button type="submit">Calculate</button>
+            </div>
+        </form>
+
+        {% if results and results.error %}
+        <div class="error">
+            <h2>Error</h2>
+            <p>{{ results.error }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

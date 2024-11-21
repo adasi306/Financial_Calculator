@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .row.spacer {
+            margin-bottom: 30px;
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 0 10px;
+        }
+        .field {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .field-text {
+            margin-right: 20px;
+        }
+        .field input, .field .auto-fill {
+            margin-left: 5px;
+        }
+        .spacer-row {
+            height: 30px;
+        }
+        .auto-fill {
+            background-color: #f0f0f0;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button-container {
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        function updateMonths() {
+            var years = document.getElementById("years").value;
+            var months = document.getElementById("months");
+            if (years) {
+                months.value = (years * 12).toFixed(2);
+            }
+        }
+
+        function updateYears() {
+            var months = document.getElementById("months").value;
+            var years = document.getElementById("years");
+            if (months) {
+                years.value = (months / 12).toFixed(2);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <form method="POST">
+            <div class="row">
+                <div class="column">
+                    <div class="field"><div class="field-text">Income</div></div>
+                    <div class="field"><input type="text" name="income" value=""></div>
+                    <div class="field"><div class="field-text">Bills</div></div>
+                    <div class="field"><input type="text" name="bills" value=""></div>
+                    <div class="field"><div class="field-text">Rent</div></div>
+                    <div class="field"><input type="text" name="rent" value=""></div>
+                    <div class="field"><div class="field-text">Loan</div></div>
+                    <div class="field"><input type="text" name="loan" value=""></div>
+                    <div class="field"><div class="field-text">Food</div></div>
+                    <div class="field"><input type="text" name="food" value=""></div>
+                    <div class="field"><div class="field-text">Transport</div></div>
+                    <div class="field"><input type="text" name="transport" value=""></div>
+                    <div class="field"><div class="field-text">Health</div></div>
+                    <div class="field"><input type="text" name="health" value=""></div>
+                    <div class="field"><div class="field-text">Education</div></div>
+                    <div class="field"><input type="text" name="education" value=""></div>
+                    <div class="field"><div class="field-text">Entertainment</div></div>
+                    <div class="field"><input type="text" name="entertainment" value=""></div>
+                </div>
+                <div class="column">
+                    <div class="field"><div class="field-text">Years</div></div>
+                    <div class="field"><input type="text" id="years" name="years" value="" oninput="updateMonths()"></div>
+                    <div class="field"><div class="field-text">Months</div></div>
+                    <div class="field"><input type="text" id="months" name="months" value="" oninput="updateYears()"></div>
+                    <div class="button-container">
+                        <button type="submit">Calculate</button>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field"><div class="field-text">Income Result</div></div>
+                    <div class="field"><div class="auto-fill">{{ results.income_result|round(2) if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Bills Result</div></div>
+                    <div class="field"><div class="auto-fill">{{ results.bills_result|round(2) if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Rent Result</div></div>
+                    <div class="field"><div class="auto-fill">{{ results.rent_result|round(2) if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Loan Result</div></div>
+                    <div class="field"><div class="auto-fill">{{ results.loan_result|round(2) if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Food Result</div></div>
+                    <div class="field"><div class="auto-fill">{{ results.food_result|round(2) if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Transport Result</div></div>
+                    <div class="field"><div class="auto-fill">{{ results.transport_result|round(2) if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Health Result</div></div>
+                    <div class="field"><div class="auto-fill">{{ results.health_result|round(2) if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Education Result</div></div>
+                    <div class="field"><div class="auto-fill">{{ results.education_result|round(2) if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Entertainment Result</div></div>
+                    <div class="field"><div class="auto-fill">{{ results.entertainment_result|round(2) if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Difference</div></div>
+                    <div class="field"><div class="auto-fill">{{ results.difference|round(2) if results else '' }}</div></div>
+                </div>
+            </div>
+        </form>
+
+        {% if results and results.error %}
+        <div class="error">
+            <h2>Error</h2>
+            <p>{{ results.error }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .row.spacer {
+            margin-bottom: 30px;
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 0 10px;
+        }
+        .field {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .field-text {
+            margin-right: 20px;
+        }
+        .field input, .field .auto-fill {
+            margin-left: 5px;
+        }
+        .spacer-row {
+            height: 30px;
+        }
+        .auto-fill {
+            background-color: #f0f0f0;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button-container {
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        function synchronizeFields() {
+            const savingYears = document.querySelector('input[name="saving_years"]');
+            const savingMonths = document.querySelector('input[name="saving_months"]');
+
+            savingYears.addEventListener('input', () => {
+                const years = parseFloat(savingYears.value);
+                if (!isNaN(years)) {
+                    savingMonths.value = (years * 12).toFixed(0);
+                } else {
+                    savingMonths.value = '';
+                }
+            });
+
+            savingMonths.addEventListener('input', () => {
+                const months = parseFloat(savingMonths.value);
+                if (!isNaN(months)) {
+                    savingYears.value = (months / 12).toFixed(2);
+                } else {
+                    savingYears.value = '';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', synchronizeFields);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <form method="POST">
+            <div class="row">
+                <div class="column">
+                    <div class="field"><div class="field-text">Initial Deposit</div></div>
+                    <div class="field"><input type="text" name="initial_deposit" value="{{ results.initial_deposit if results else '' }}"></div>
+                    <div class="field"><div class="field-text">Monthly Deposit</div></div>
+                    <div class="field"><input type="text" name="monthly_deposit" value="{{ results.monthly_deposit if results else '' }}"></div>
+                    <div class="spacer-row"></div>
+                    <div class="field"><div class="field-text">Total Deposit</div></div>
+                    <div class="field"><div id="auto1" class="auto-fill">{{ results.total_deposit if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Final Amount</div></div>
+                    <div class="field"><div id="auto3" class="auto-fill">{{ results.final_sum if results else '' }}</div></div>
+                </div>
+                <div class="column">
+                    <div class="field"><div class="field-text">Saving Years</div></div>
+                    <div class="field"><input type="text" name="saving_years" value="{{ results.saving_years if results else '' }}"></div>
+                    <div class="field"><div class="field-text">Saving Months</div></div>
+                    <div class="field"><input type="text" name="saving_months" value="{{ results.saving_months if results else '' }}"></div>
+                    <div class="spacer-row"></div>
+                    <div class="field"><div class="field-text">Interest Income</div></div>
+                    <div class="field"><div id="auto2" class="auto-fill">{{ results.total_profit if results else '' }}</div></div>
+                    <div class="field"><div class="field-text">Tax Paid</div></div>
+                    <div class="field"><div id="auto4" class="auto-fill">{{ results.total_tax if results else '' }}</div></div>
+                </div>
+                <div class="column">
+                    <div class="field"><div class="field-text">Interest Rate</div></div>
+                    <div class="field"><input type="text" name="interest_rate" value="{{ results.interest_rate if results else '' }}"></div>
+                    <div class="button-container">
+                        <button type="submit">Calculate</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        {% if results.error %}
+        <div class="error">
+            <h2>Error</h2>
+            <p>{{ results.error }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
